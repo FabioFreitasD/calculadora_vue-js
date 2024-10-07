@@ -1,47 +1,64 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script>
+  import { reactive } from 'vue';
+
+  const estado = reactive({
+    valor1: 0,
+    valor2: 0,
+    operacao: ''
+  });
+
+  const resultado = () => {
+    const{ operacao, valor1, valor2 } = estado;
+
+    switch (operacao) {
+      case 'soma':
+        return valor1 + valor2;
+      case 'subtracao':
+        return valor1 - valor2;
+      case 'multiplicacao':
+        return valor1 * valor2;
+      case 'divisao':
+        return valor2 !== 0 ? valor1 / valor2 : 'Erro: Divisão por zero';
+      default:
+        return 'Operação inválida'
+    }
+  };
+  export default {
+    setup() {
+      return {
+        estado,
+        resultado
+      };
+    }
+  }
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div class="container mt-5 bg-light rounded-3">
+    <h1>Calculadora Aritmética</h1>
+    <div>
+      <input type="number" v-model.number="estado.valor1" placeholder="Número 1" />
+      <select v-model="estado.operacao">
+        <option value="soma">+</option>
+        <option value="subtracao">-</option>
+        <option value="multiplicacao">*</option>
+        <option value="divisao">/</option>
+      </select>
+      <input type="number" v-model.number="estado.valor2" placeholder="Número 2" />
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+    <h2>Resultado: {{ resultado() }}</h2>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+  .container {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    text-align: center;
+    
+  }
+  input, select {
+    margin: 10px;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
